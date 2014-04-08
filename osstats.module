@@ -1,0 +1,89 @@
+<?php
+
+/** Trial code
+// var_dump(get_object_vars($stats_data));
+ //  $temp = get_object_vars($stats_data);
+   /* foreach ($temp as $key => $value){
+       $s = get_object_vars($value);
+	   foreach ($s as $key => $value){
+       //   print implode(",",$s)."<br />";
+	      print 'Key: '.$key.' , value is: '.$value."<br />";
+    //   print 'Label: '.$key.' and value is: '.implode(",",get_object_vars($value));
+//		print '<br /><br />'; 
+   }
+   } 
+ //  var_dump(json_decode($json))
+ */
+/**
+ * hook_menu for OpenScholar Stats
+ */	
+function osstats_menu(){
+	
+    $items = array();
+    $items['osstats'] = array(
+        'title' => 'OS Stats',
+        'description' => 'Displays statistics of usage of OS map',
+        'page callback' => 'statsShow', 
+		'access callback' => TRUE,
+		);
+	$items['osstats/list'] =array(
+	   'title' => 'Statistics List',
+	   'type' => MENU_DEFAULT_LOCAL_TASK,
+	   'weight' => -10,
+	 );
+	return $items;
+}
+/* {"filesize":{"value":"7.72 GB","text":"Total uploaded"},
+"filesize_bytes":{"value":"8293898794","text":"Total uploaded bytes"},
+"users":{"value":"642","text":"Users"},
+"new_users":{"value":"0","text":"New users"},
+"websites":{"value":"343","text":"Websites"},
+"new_websites":{"value":"0","text":"New websites"},
+"posts":{"value":"28313","text":"Posts"},
+"new_posts":{"value":"2","text":"New posts"},
+"publications":{"value":"1728","text":"Publications"},
+"new_publications":{"value":"0","text":"New publications"},
+"files":{"value":"22157","text":"Uploaded files"},
+"href":"http:\/\/hwpi.harvard.edu\/stats?version=1&format=json&type=all&style=default","os_version":null} */
+
+/* function make_stats_array($stats_array){
+    $sarray = array();
+    $sarray[] = array(
+	 'filesize' => json_encode($stats_array->filesize->text." : ".$stats_array->filesize->value)
+	);
+	return $sarray;
+} */
+/*function make_array($stats){
+   $tabled_stats[] = array(
+   'file_size' => ($stats->filesize->text) . " : " .($stats->filesize->value);
+   'bytes' => $stats->filesize_bytes->text." : ".$stats->filesize_bytes->value;
+   );
+
+}*/
+function statsShow(){
+   $stats = file_get_contents('http://hwpi.harvard.edu/stats');
+   $jsoned =  drupal_json_decode($stats);
+   foreach($jsoned as $key => $value) {
+      //  foreach($o as $key => $value) {
+            echo "The key is: ".$key." and the value is: ".$value."<br>";
+       // }
+    }
+  // $encoded_data = ($stats_data);
+  // $starray = make_stats_array($stats_data);
+ /*    $header = osstats_table_header();
+   $file_size = ($stats_data->filesize->text) . " : " .($stats_data->filesize->value);
+   $bytes = $stats_data->filesize_bytes->text." : ".$stats_data->filesize_bytes->value;
+   $rows[] = array(
+    'data' => array(
+	 $file_size,
+	 $bytes     
+	 ));
+  
+   $output =  theme('table', array('header' => $header, 'rows' => $rows)); 
+  */  
+   //dvm($stats_data['filesize']['value']);
+}
+
+function osstats_table_header(){
+  return $header = array('Title', 'Size');
+					}
