@@ -1,0 +1,4 @@
+name = OSstats
+description = Displays stats for hwp site
+core = 7.x
+files[] = osstats.module
